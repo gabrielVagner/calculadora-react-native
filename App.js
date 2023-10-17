@@ -11,7 +11,7 @@ export default function App() {
   const [symbol, setSymbol] = useState('')
 
   function setNumber(params) {
-    if(params == "." && displayV.includes('.')) {return}
+    if(params == "." && !clearDisplay && displayV.includes('.')) {return}
     if(clearDisplay){
       setDisplayV('')
       setClearDisplay(false)
