@@ -26,43 +26,34 @@ export default function App() {
 
   function setOperation(params) {
     let val = numbers
-    
+    setSymbol(params)
 
     if(position === 0){
       setClearDisplay(true)
       val[position] = parseFloat(displayV)
       setNumbers(val)
-      setSymbol(params)
-      setPosition(symbol ==='=' ? 0 : 1)
-      
-      console.log(numbers, position)
-
+      setPosition(1)
+      //console.log(numbers, position)
     }else{
-      setNumbers(val)
-      setClearDisplay(true)
       val[position] = parseFloat(displayV)
-      
-      console.log(numbers, position)
-      
+      //console.log(numbers, position)
 
       try {
-        console.log(`${val[0]} ${symbol} ${val[1]} `)
-        
+        //console.log(`${val[0]} ${symbol} ${val[1]} `)
         val[0] = eval(`${val[0]} ${symbol} ${val[1]}`)
         val[1] = 0
-        setNumbers(val)
-        setSymbol('')
-        setPosition(0)
+        
         
       } catch (error) {
-        val[0] = numbers[0]
-        setNumbers(val)
-        
-
-        console.log(error)
+        val[0] = numbers[0] 
+        //console.log(error)
       }
-      setDisplayV(numbers[0])
-      console.log(numbers, 'final')
+
+      setPosition(params==='='? 0 : 1)
+      setNumbers(val)
+      setDisplayV(`${numbers[0]}`)
+      setClearDisplay(true)
+      //console.log(numbers, 'final')
     }
   }
 
