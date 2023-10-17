@@ -4,33 +4,100 @@ import { Buttom } from './src/components/Buttom'
 import { Display } from './src/components/Display';
 
 export default function App() {
-  const [value, setValue] = useState("0")
+  const [displayV, setDisplayV] = useState("0")
+  const [clearDisplay, setClearDisplay] = useState(false)
+  const [numbers, setNumbers] = useState([0,0])
+  const [position, setPosition] = useState(0)
+  const [symbol, setSymbol] = useState('')
+
+  function setNumber(params) {
+    if(params == "." && displayV.includes('.')) {return}
+    if(clearDisplay){
+      setDisplayV('')
+      setClearDisplay(false)
+
+      const newValue = params !=='.' ? params : '0'+params
+      setDisplayV(newValue)
+    }else{
+      const newValue = displayV === '0' && params !=='.' ? params : displayV+params
+      setDisplayV(newValue)
+    }
+  }
+
+  function setOperation(params) {
+    let val = numbers
+    
+
+    if(position === 0){
+      setClearDisplay(true)
+      val[position] = parseFloat(displayV)
+      setNumbers(val)
+      setSymbol(params)
+      setPosition(symbol ==='=' ? 0 : 1)
+      
+      console.log(numbers, position)
+
+    }else{
+      setNumbers(val)
+      setClearDisplay(true)
+      val[position] = parseFloat(displayV)
+      
+      console.log(numbers, position)
+      
+
+      try {
+        console.log(`${val[0]} ${symbol} ${val[1]} `)
+        
+        val[0] = eval(`${val[0]} ${symbol} ${val[1]}`)
+        val[1] = 0
+        setNumbers(val)
+        setSymbol('')
+        setPosition(0)
+        
+      } catch (error) {
+        val[0] = numbers[0]
+        setNumbers(val)
+        
+
+        console.log(error)
+      }
+      setDisplayV(numbers[0])
+      console.log(numbers, 'final')
+    }
+  }
+
+  function clear() {
+    setDisplayV('0')
+    setNumbers([0,0])
+    setPosition(0)
+    setSymbol('')
+  }
 
   return (
     <SafeAreaView style={styles.safeArea}>
-      <Display value={value}/>
+      <Display value={displayV}/>
       <View style={styles.buttomArea}>
-        <Buttom text="AC" triple operation press={()=>setValue('0')}/>
-        <Buttom text="/" operation/>
+        <Buttom text="AC" triple operation press={clear}/>
+        <Buttom text="/" operation press={setOperation}/>
 
-        <Buttom text="7"/>
-        <Buttom text="8"/>
-        <Buttom text="9"/>
-        <Buttom text="*" operation/>
+        <Buttom text="7" press={setNumber}/>
+        <Buttom text="8" press={setNumber}/>
+        <Buttom text="9" press={setNumber}/>
+        <Buttom text="*" operation press={setOperation}/>
 
-        <Buttom text="4"/>
-        <Buttom text="5"/>
-        <Buttom text="6"/>
-        <Buttom text="+" operation/>
+        <Buttom text="4" press={setNumber}/>
+        <Buttom text="5" press={setNumber}/>
+        <Buttom text="6" press={setNumber}/>
+        <Buttom text="+" operation press={setOperation}/>
 
-        <Buttom text="1"/>
-        <Buttom text="2"/>
-        <Buttom text="3"/>
-        <Buttom text="-" operation/>
+        <Buttom text="1" press={setNumber}/>
+        <Buttom text="2" press={setNumber}/>
+        <Buttom text="3" press={setNumber}/>
+        <Buttom text="-" operation press={setOperation}/>
 
-        <Buttom text="0" double/>
-        <Buttom text="." operation/>
-        <Buttom text="=" operation/>
+        <Buttom text="0" double press={setNumber}/>
+        <Buttom text="." press={setNumber}/>
+        <Buttom text="=" operation press={setOperation}/>
 
       </View>
     </SafeAreaView>

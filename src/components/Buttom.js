@@ -6,7 +6,7 @@ export function Buttom(props) {
     if(props.triple) styleB.push(styles.buttomTriple)
     if(props.operation) styleB.push(styles.operation)
     return (
-        <TouchableHighlight style={styleB} onPress={props.press}>
+        <TouchableHighlight style={styleB} onPress={()=>props.press(props.text)}>
             <Text style={styles.text}>{props.text}</Text>
         </TouchableHighlight>
     );
